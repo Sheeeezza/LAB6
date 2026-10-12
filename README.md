@@ -41,11 +41,6 @@ Calculation, formatting and I/O are three separate layers; text and JSON both re
 4. **Quality trade-off** – `calculate_total` uses a generator expression with `sum()` rather than a manual loop. Measured: ~0.0084s vs ~0.0088s for 200k items, so the clearer version costs nothing. A hand-optimised version would add complexity for no measured gain, so readability wins.
 5. **Reusable standard-library feature** – `json.dumps` (serialisation) and `dataclasses.asdict` / `abc.ABC`, instead of hand-building JSON strings.
 
-## Viva answers
-- **Why separate I/O from business logic?** Logic can be unit-tested without capturing output, reused with different front ends (text, JSON, web), and changed independently.
-- **What does reuse mean beyond copy-paste?** Calling one tested implementation from many places (a shared function, module, or library) so a fix happens once.
-- **What is a quality attribute?** A non-functional property such as maintainability, performance, reliability, or security that shapes design choices.
-- **Why can more abstraction hurt readability?** Extra layers and indirection make readers jump between files to follow simple behaviour; abstract only where change is likely.
 
 ## Suggested Git commits
 ```
@@ -55,8 +50,12 @@ git add activities/activity2_serializer.py  && git commit -m "feat: add JSON inv
 git add activities/activity3_tradeoff.py    && git commit -m "docs: add quality trade-off benchmark"
 git add invoice_app && git commit -m "feat: add InvoiceService with discount and tax"
 git add notify_app  && git commit -m "feat: add email/SMS notification formatters"
-git add tests pytest.ini README.md && git commit -m "test: cover business rules; add README"
-```
 
-## Independent extension (example)
-*Requirement:* add a late-fee rule (PKR 50/day) as an extra `LineItem`. Only `calculator.py` changes (new helper `late_fee_item(days)`); add a test, commit separately.
+```
+<img width="726" height="226" alt="SR2" src="https://github.com/user-attachments/assets/f2b1e024-648b-488e-85ba-098211783826" />
+<img width="892" height="556" alt="SR4" src="https://github.com/user-attachments/assets/71b19ab6-bc9b-4349-aa91-ec08283d4068" />
+<img width="832" height="281" alt="sd1" src="https://github.com/user-attachments/assets/833ddd25-e94b-4fa4-806f-b7d444dcf5f5" />
+
+
+
+
